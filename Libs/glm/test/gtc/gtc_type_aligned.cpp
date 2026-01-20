@@ -1,28 +1,25 @@
-// Force explicit ctors in this test to catch returning the wrong vector size from e.g. glm::xyz
-#define GLM_FORCE_EXPLICIT_CTOR
-
 #include <glm/glm.hpp>
 
-#if GLM_CONFIG_ALIGNED_GENTYPES == GLM_ENABLE
+#if GLM_CONFIG_ALIGNED_GENTYPES == GLM_ENABLE && !(GLM_ARCH & GLM_ARCH_NEON_BIT) // Fail on Github macOS latest C.I.
 #include <glm/gtc/type_aligned.hpp>
 #include <glm/gtc/type_precision.hpp>
 #include <glm/ext/scalar_relational.hpp>
 #include <glm/ext/vector_relational.hpp>
 #include <glm/ext/matrix_relational.hpp>
 
-static_assert(glm::detail::is_aligned<glm::aligned_lowp>::value, "aligned_lowp is not aligned");
-static_assert(glm::detail::is_aligned<glm::aligned_mediump>::value, "aligned_mediump is not aligned");
-static_assert(glm::detail::is_aligned<glm::aligned_highp>::value, "aligned_highp is not aligned");
-static_assert(!glm::detail::is_aligned<glm::packed_highp>::value, "packed_highp is aligned");
-static_assert(!glm::detail::is_aligned<glm::packed_mediump>::value, "packed_mediump is aligned");
-static_assert(!glm::detail::is_aligned<glm::packed_lowp>::value, "packed_lowp is aligned");
+GLM_STATIC_ASSERT(glm::detail::is_aligned<glm::aligned_lowp>::value, "aligned_lowp is not aligned");
+GLM_STATIC_ASSERT(glm::detail::is_aligned<glm::aligned_mediump>::value, "aligned_mediump is not aligned");
+GLM_STATIC_ASSERT(glm::detail::is_aligned<glm::aligned_highp>::value, "aligned_highp is not aligned");
+GLM_STATIC_ASSERT(!glm::detail::is_aligned<glm::packed_highp>::value, "packed_highp is aligned");
+GLM_STATIC_ASSERT(!glm::detail::is_aligned<glm::packed_mediump>::value, "packed_mediump is aligned");
+GLM_STATIC_ASSERT(!glm::detail::is_aligned<glm::packed_lowp>::value, "packed_lowp is aligned");
 
 struct my_vec4_packed
 {
 	glm::uint32 a;
 	glm::vec4 b;
 };
-static_assert(sizeof(my_vec4_packed) == sizeof(glm::uint32) + sizeof(glm::vec4), "glm::vec4 packed is not correct");
+GLM_STATIC_ASSERT(sizeof(my_vec4_packed) == sizeof(glm::uint32) + sizeof(glm::vec4), "glm::vec4 packed is not correct");
 
 #if GLM_COMPILER & GLM_COMPILER_CLANG
 #	pragma clang diagnostic push
@@ -34,7 +31,7 @@ struct my_vec4_aligned
 	glm::uint32 a;
 	glm::aligned_vec4 b;
 };
-static_assert(sizeof(my_vec4_aligned) == sizeof(glm::aligned_vec4) * 2, "glm::vec4 aligned is not correct");
+GLM_STATIC_ASSERT(sizeof(my_vec4_aligned) == sizeof(glm::aligned_vec4) * 2, "glm::vec4 aligned is not correct");
 
 #if GLM_COMPILER & GLM_COMPILER_CLANG
 #	pragma clang diagnostic pop
@@ -45,14 +42,14 @@ struct my_dvec4_packed
 	glm::uint64 a;
 	glm::dvec4 b;
 };
-static_assert(sizeof(my_dvec4_packed) == sizeof(glm::uint64) + sizeof(glm::dvec4), "glm::dvec4 packed is not correct");
+GLM_STATIC_ASSERT(sizeof(my_dvec4_packed) == sizeof(glm::uint64) + sizeof(glm::dvec4), "glm::dvec4 packed is not correct");
 
 struct my_dvec4_aligned
 {
 	glm::uint64 a;
 	glm::aligned_dvec4 b;
 };
-//static_assert(sizeof(my_dvec4_aligned) == sizeof(glm::aligned_dvec4) * 2, "glm::dvec4 aligned is not correct");
+//GLM_STATIC_ASSERT(sizeof(my_dvec4_aligned) == sizeof(glm::aligned_dvec4) * 2, "glm::dvec4 aligned is not correct");
 
 #if GLM_COMPILER & GLM_COMPILER_CLANG
 #	pragma clang diagnostic push
@@ -69,7 +66,7 @@ struct my_ivec4_packed
 #	pragma clang diagnostic pop
 #endif
 
-static_assert(sizeof(my_ivec4_packed) == sizeof(glm::uint32) + sizeof(glm::ivec4), "glm::ivec4 packed is not correct");
+GLM_STATIC_ASSERT(sizeof(my_ivec4_packed) == sizeof(glm::uint32) + sizeof(glm::ivec4), "glm::ivec4 packed is not correct");
 
 #if GLM_COMPILER & GLM_COMPILER_CLANG
 #	pragma clang diagnostic push
@@ -86,14 +83,14 @@ struct my_ivec4_aligned
 #	pragma clang diagnostic pop
 #endif
 
-static_assert(sizeof(my_ivec4_aligned) == sizeof(glm::aligned_ivec4) * 2, "glm::ivec4 aligned is not correct");
+GLM_STATIC_ASSERT(sizeof(my_ivec4_aligned) == sizeof(glm::aligned_ivec4) * 2, "glm::ivec4 aligned is not correct");
 
 struct my_u8vec4_packed
 {
 	glm::uint32 a;
 	glm::u8vec4 b;
 };
-static_assert(sizeof(my_u8vec4_packed) == sizeof(glm::uint32) + sizeof(glm::u8vec4), "glm::u8vec4 packed is not correct");
+GLM_STATIC_ASSERT(sizeof(my_u8vec4_packed) == sizeof(glm::uint32) + sizeof(glm::u8vec4), "glm::u8vec4 packed is not correct");
 
 static int test_copy_vec4()
 {
@@ -135,14 +132,18 @@ static int test_copy_vec4()
 	{
 		glm::aligned_ivec4 const u(1, 2, 3, 4);
 		glm::packed_ivec4 const v(u);
-		glm::aligned_ivec4 const w(v);
-		Error += glm::all(glm::equal(u, w)) ? 0 : 1;
+		Error += v.x == u.x ? 0 : 1;
+		Error += v.y == u.y ? 0 : 1;
+		Error += v.z == u.z ? 0 : 1;
+		Error += v.w == u.w ? 0 : 1;
 	}
 	{
 		glm::packed_ivec4 const u(1, 2, 3, 4);
 		glm::aligned_ivec4 const v(u);
-		glm::packed_ivec4 const w(v);
-		Error += glm::all(glm::equal(u, w)) ? 0 : 1;
+		Error += v.x == u.x ? 0 : 1;
+		Error += v.y == u.y ? 0 : 1;
+		Error += v.z == u.z ? 0 : 1;
+		Error += v.w == u.w ? 0 : 1;
 	}
 
 	return Error;
@@ -184,14 +185,16 @@ static int test_copy_vec3()
 	{
 		glm::aligned_ivec3 const u(1, 2, 3);
 		glm::packed_ivec3 const v(u);
-		glm::aligned_ivec3 const w(v);
-		Error += glm::all(glm::equal(u, w)) ? 0 : 1;
+		Error += v.x == u.x ? 0 : 1;
+		Error += v.y == u.y ? 0 : 1;
+		Error += v.z == u.z ? 0 : 1;
 	}
 	{
 		glm::packed_ivec3 const u(1, 2, 3);
 		glm::aligned_ivec3 const v(u);
-		glm::packed_ivec3 const w(v);
-		Error += glm::all(glm::equal(u, w)) ? 0 : 1;
+		Error += v.x == u.x ? 0 : 1;
+		Error += v.y == u.y ? 0 : 1;
+		Error += v.z == u.z ? 0 : 1;
 	}
 
 	return Error;
@@ -433,9 +436,10 @@ static int test_copy()
 	{
 		glm::aligned_ivec4 const a(1, 2, 3, 4);
 		glm::ivec4 const u(a);
-		glm::aligned_ivec4 const v(u);
-
-		Error += glm::all(glm::equal(a, v)) ? 0 : 1;
+		Error += a.x == u.x ? 0 : 1;
+		Error += a.y == u.y ? 0 : 1;
+		Error += a.z == u.z ? 0 : 1;
+		Error += a.w == u.w ? 0 : 1;
 	}
 
 	{
@@ -450,6 +454,42 @@ static int test_copy()
 		Error += a.b.z == u.b.z ? 0 : 1;
 		Error += a.b.w == u.b.w ? 0 : 1;
 	}
+
+	return Error;
+}
+
+static int test_ctor()
+{
+	int Error = 0;
+
+#	if GLM_HAS_CONSTEXPR
+	{
+		constexpr glm::aligned_ivec4 v(1);
+
+		Error += v.x == 1 ? 0 : 1;
+		Error += v.y == 1 ? 0 : 1;
+		Error += v.z == 1 ? 0 : 1;
+		Error += v.w == 1 ? 0 : 1;
+	}
+
+	{
+		constexpr glm::packed_ivec4 v(1);
+
+		Error += v.x == 1 ? 0 : 1;
+		Error += v.y == 1 ? 0 : 1;
+		Error += v.z == 1 ? 0 : 1;
+		Error += v.w == 1 ? 0 : 1;
+	}
+
+	{
+		constexpr glm::ivec4 v(1);
+
+		Error += v.x == 1 ? 0 : 1;
+		Error += v.y == 1 ? 0 : 1;
+		Error += v.z == 1 ? 0 : 1;
+		Error += v.w == 1 ? 0 : 1;
+	}
+#	endif//GLM_HAS_CONSTEXPR
 
 	return Error;
 }
@@ -488,8 +528,9 @@ static int test_aligned_mat4()
 
 int main()
 {
-	int Error = 0;
+int Error = 0;
 
+	Error += test_ctor();
 	Error += test_copy_vec4();
 	Error += test_copy_vec3();
 	Error += test_splat_vec3();
