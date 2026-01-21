@@ -1,23 +1,20 @@
-#include "glad.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Application.h"
 
-
-
 Application app;
 
-void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
+void MiCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     app.keyCallback(key, scancode, action, mods);
 }
 
-
 int main(void)
 {
 
-	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
+    /* Initialize the library */
+    if (!glfwInit())
+        return -1;
 
     /* Create a windowed mode window and its OpenGL context */
     app.window = glfwCreateWindow(1024, 768, "Hello Application", NULL, NULL);
@@ -30,39 +27,35 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(app.window);
 
-
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        //Manejar error
+        // Manejar error
+        // "glfwGetProcAddress" es la función que GLFW proporciona para obtener las direcciones
+        // de las funciones de OpenGL, que es lo que GLAD necesita para cargar.
         return -1;
     }
 
-
     app.setup();
 
-    glfwSetKeyCallback(app.window, KeyCallBack);
+    //seccion de asignacion de callbacks
+    glfwSetKeyCallback(app.window, MiCallback);
 
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    bool openWindow = true; //Variable que indica si va a estar abierta o no la ventana del proyecto
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(app.window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        /* Swap front and back buffers */
-        //glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
         app.update();
 
         app.draw();
-
-        /*Swap front and back buffers*/
+        /* Swap front and back buffers */
         glfwSwapBuffers(app.window);
     }
 
