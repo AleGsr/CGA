@@ -2,43 +2,42 @@
 #include <iostream>
 #include "ShaderFuncs.h"
 
+
+Application::Application() : oPlane()
+{
+
+}
+
+
 void Application::setupGeometry()
 {
-	std::vector<float> geometry{
-		// X    Y    Z     W
-		-1.0f,  1.0, 0.0f, 1.0f,  //vertice 1
-		-1.0f, -1.0, 0.0f, 1.0f,  //vertice 2
-		 1.0f, -1.0, 0.0f, 1.0f,  //vertice 3
+	oPlane.createPlane(100);
 
-		1.0f, 0.0f, 0.0f, 1.0f,   //rojo
-		0.0f, 1.0f, 0.0f, 1.0f,   //verde
-		 0.0f, 0.0f, 1.0f, 1.0f   //azul
-	};
+	glGenVertexArrays(1, &oPlane.vao);
+	glBindVertexArray(oPlane.vao);
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	//Crear VAO
-	GLuint VAO, VBO;
-	glGenVertexArrays(1, &VAO);
-	ids["triangle"] = VAO;
+	glBufferData(GL_ARRAY_BUFFER, oPlane.getVertexSizeInBytes() +
+		oPlane.getTextureCoordsSizeInBytes(), NULL, GL_STATIC_DRAW);
 
-	glBindVertexArray(VAO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, oPlane.getVertexSizeInBytes(), oPlane.plane);
 
-	//crear VBO vertices
-	glGenBuffers(1, &VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, oPlane.getVertexSizeInBytes(),
+		oPlane.getTextureCoordsSizeInBytes(), oPlane.textureCoords);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);  //Ojo esto todavia no ha reservado memoria
-	//Pasar arreglo de vertices
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(GLfloat) * geometry.size(),  //calculo de tamaño en bytes
-		&geometry[0],
-		GL_STATIC_DRAW);  //Mandamos la geometria al buffer
+	oPlane.cleanMemory();
 
-	//vertices
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(oPlane.getVertexSizeInBytes()));
 
-	//Colores
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void*)(12*sizeof(float)));
+	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnable(GL_DEPTH_TEST);
+
+	//ids["triangle"] = VAO;
+
 }
 
 void Application::setupProgram1()
@@ -78,7 +77,7 @@ void Application::setup()
 void Application::update()
 {
 	time += 0.1f;
-	eye = glm::vec3( 0.0f, 0.0f, 2.0f + cos (time));
+	eye = glm::vec3( 0.0f, 3.0f, 3.0f);
 	camera = glm::lookAt(eye, center, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
@@ -93,8 +92,12 @@ void Application::draw()
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
 	
 	//Seleccionar la geometria (el triangulo)
-	glBindVertexArray(ids["triangle"]);
+	//glBindVertexArray(ids["triangle"]);
+	glBindVertexArray(oPlane.vao);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//glDraw()
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, oPlane.getNumVertex());
 }

@@ -6,6 +6,7 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Plane.h"
 
 class Application
 {
@@ -13,6 +14,8 @@ class Application
 private:
 	
 	std::map<std::string, GLuint> ids;
+	
+	Plane oPlane;
 
 	void setupGeometry();
 	void setupProgram1();
@@ -24,7 +27,7 @@ private:
 	glm::vec3 center{0.1f, 0.1f, 0.5f};
 
 public:
-
+	Application();
 	GLFWwindow* window;
 	void setup();
 	void update();

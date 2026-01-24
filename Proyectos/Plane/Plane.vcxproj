@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Plane.h" />
+    <ClInclude Include="include\ShaderFuncs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Libs\glad\src\glad.c" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Plane.cpp" />
+    <ClCompile Include="src\ShaderFuncs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\FragmentCamera.glsl" />
+    <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Shaders\VertexCamera.glsl" />
+    <None Include="Shaders\VertexShader.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -102,10 +120,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)../../Libs/glad/include;$(ProjectDir)../../Libs/glm;$(ProjectDir)../../Libs/glfw/include;include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>include;$(SolutionDir)../Libs/glad/include;$(SolutionDir)../Libs/glm;$(SolutionDir)../Libs/glfw/src/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -116,28 +137,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)../../Libs/glad/include;$(ProjectDir)../../Libs/glm;$(ProjectDir)../../Libs/glfw/include;include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>include;$(SolutionDir)../Libs/glad/include;$(SolutionDir)../Libs/glm;$(SolutionDir)../Libs/glfw/src/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\ShaderFuncs.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Libs\glad\src\glad.c" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ShaderFuncs.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\FragmentCamera.glsl" />
-    <None Include="Shaders\FragmentShader.glsl" />
-    <None Include="Shaders\VertexCamera.glsl" />
-    <None Include="Shaders\VertexShader.glsl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
