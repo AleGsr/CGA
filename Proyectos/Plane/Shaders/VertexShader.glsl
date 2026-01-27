@@ -5,6 +5,10 @@ layout (location = 1) in vec4 vColor;
 
 out vec4 vertexColor;
 uniform float time;
+uniform mat4 cam;
+
+
+float 
 
 void main ()
 {  		
