@@ -49,13 +49,13 @@
     <None Include="Shaders\FragmentCamera.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\FragmentShader.glsl">
+    <None Include="Shaders\FragmentADS.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\VertexCamera.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\VertexShader.glsl">
+    <None Include="Shaders\VertexADS.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

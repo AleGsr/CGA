@@ -8,6 +8,19 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Plane.h"
 
+typedef struct {
+	glm::vec3 position;
+	glm::vec4 ambient;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+}Light;
+
+typedef struct {
+	glm::vec4 ambient;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+}Material;
+
 class Application
 {
 	

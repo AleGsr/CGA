@@ -50,8 +50,8 @@ void Application::setupProgram1()
 
 void Application::setupProgram2()
 {
-	std::string vertexShader = loadTextFile("shaders/VertexCamera.glsl");
-	std::string fragmentShader = loadTextFile("shaders/FragmentCamera.glsl");
+	std::string vertexShader = loadTextFile("shaders/VertexADS.glsl");
+	std::string fragmentShader = loadTextFile("shaders/FragmentADS.glsl");
 	ids["program2"] = InitializeProgram(vertexShader, fragmentShader);
 	ids["time2"] = glGetUniformLocation(ids["program2"], "time");
 	ids["camera"] = glGetUniformLocation(ids["program2"], "camera");
@@ -72,6 +72,11 @@ void Application::setup()
 	setupProgram1();
 	setupProgram2();
 	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
+
+
+	//Valores del uniform
+	
+
 }
 
 void Application::update()
@@ -90,6 +95,22 @@ void Application::draw()
 	glUniform1f(ids["time2"], time);
 	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
+
+
+
+	//Ids
+	 //Light
+	GLint LightPosition = glGetUniformLocation(ids["program2"], "light.position");
+	GLint LightAmbient = glGetUniformLocation(ids["program2"], "light.ambient");
+	GLint LightDiffuse = glGetUniformLocation(ids["program2"], "light.diffuse");
+	GLint LightSpecular = glGetUniformLocation(ids["program2"], "light.specular");
+
+	 //Material
+	GLint MaterialAmbient = glGetUniformLocation(ids["program2"], "material.ambient");
+	GLint MaterialDiffuse = glGetUniformLocation(ids["program2"], "material.diffuse");
+	GLint MaterialSpecular = glGetUniformLocation(ids["program2"], "material.specular");
+
+
 	
 	//Seleccionar la geometria (el triangulo)
 	//glBindVertexArray(ids["triangle"]);
@@ -100,4 +121,6 @@ void Application::draw()
 	//glDraw()
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawArrays(GL_TRIANGLES, 0, oPlane.getNumVertex());
+
+
 }
