@@ -1,6 +1,8 @@
 #include "Application.h"
 #include <iostream>
 #include "ShaderFuncs.h"
+//#include “glm/gtc/type_ptr.hpp”
+
 
 
 Application::Application() : oPlane()
@@ -75,7 +77,15 @@ void Application::setup()
 
 
 	//Valores del uniform
-	
+	/*glUniform4fv(LightPosition, 1, glm::value_ptr(light.position));
+	glUniform4fv(LightAmbient, 1, glm::value_ptr(light.ambient));
+	glUniform4fv(LightDiffuse, 1, glm::value_ptr(light.diffuse));
+	glUniform4fv(LightSpecular, 1, glm::value_ptr(light.specular));
+
+
+	glUniform4fv(MaterialAmbien, 1, glm::value_ptr(material.ambient));
+	glUniform4fv(MaterialDiffuse, 1, glm::value_ptr(material.diffuse));
+	glUniform4fv(MaterialSpecular, 1, glm::value_ptr(material.specular));*/
 
 }
 
