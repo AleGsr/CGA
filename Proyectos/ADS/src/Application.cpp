@@ -1,7 +1,7 @@
 #include "Application.h"
 #include <iostream>
 #include "ShaderFuncs.h"
-//#include “glm/gtc/type_ptr.hpp”
+#include "glm/gtc/type_ptr.hpp"
 
 
 
@@ -76,16 +76,17 @@ void Application::setup()
 	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
 
 
-	//Valores del uniform
-	/*glUniform4fv(LightPosition, 1, glm::value_ptr(light.position));
-	glUniform4fv(LightAmbient, 1, glm::value_ptr(light.ambient));
-	glUniform4fv(LightDiffuse, 1, glm::value_ptr(light.diffuse));
-	glUniform4fv(LightSpecular, 1, glm::value_ptr(light.specular));
+	//Ids
+	 //Light
+	ids["LightPosition"] = glGetUniformLocation(ids["program2"], "light.position");
+	ids["LightAmbient"] = glGetUniformLocation(ids["program2"], "light.ambient");
+	ids["LightDiffuse"] = glGetUniformLocation(ids["program2"], "light.diffuse");
+	ids["LightSpecular"] = glGetUniformLocation(ids["program2"], "light.specular");
 
-
-	glUniform4fv(MaterialAmbien, 1, glm::value_ptr(material.ambient));
-	glUniform4fv(MaterialDiffuse, 1, glm::value_ptr(material.diffuse));
-	glUniform4fv(MaterialSpecular, 1, glm::value_ptr(material.specular));*/
+	//Material
+	ids["MaterialAmbient"] = glGetUniformLocation(ids["program2"], "material.ambient");
+	ids["MaterialDiffuse"] = glGetUniformLocation(ids["program2"], "material.diffuse");
+	ids["MaterialSpecular"] = glGetUniformLocation(ids["program2"], "material.specular");
 
 }
 
@@ -102,24 +103,25 @@ void Application::draw()
 	glUseProgram(ids["program2"]);
 
 	//Pasar el resto de los parámetros para el programa
-	glUniform1f(ids["time2"], time);
+	glUniform1i(ids["time2"], time);
 	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
 
 
 
-	//Ids
-	 //Light
-	GLint LightPosition = glGetUniformLocation(ids["program2"], "light.position");
-	GLint LightAmbient = glGetUniformLocation(ids["program2"], "light.ambient");
-	GLint LightDiffuse = glGetUniformLocation(ids["program2"], "light.diffuse");
-	GLint LightSpecular = glGetUniformLocation(ids["program2"], "light.specular");
+	
 
-	 //Material
-	GLint MaterialAmbient = glGetUniformLocation(ids["program2"], "material.ambient");
-	GLint MaterialDiffuse = glGetUniformLocation(ids["program2"], "material.diffuse");
-	GLint MaterialSpecular = glGetUniformLocation(ids["program2"], "material.specular");
+	//Valores del uniform
+	//uniform, ids[nombre del ID]
+	glUniform3fv(ids["LightPosition"], 1, glm::value_ptr(light.position));
+	glUniform4fv(ids["LightAmbient"], 1, glm::value_ptr(light.ambient));
+	glUniform4fv(ids["LightDiffuse"], 1, glm::value_ptr(light.diffuse));
+	glUniform4fv(ids["LightSpecular"], 1, glm::value_ptr(light.specular));
 
+
+	glUniform4fv(ids["MaterialAmbient"], 1, glm::value_ptr(material.ambient));
+	glUniform4fv(ids["MaterialDiffuse"], 1, glm::value_ptr(material.diffuse));
+	glUniform4fv(ids["MaterialSpecular"], 1, glm::value_ptr(material.specular));
 
 	
 	//Seleccionar la geometria (el triangulo)
@@ -134,3 +136,9 @@ void Application::draw()
 
 
 }
+
+
+//Operar el vertice
+//Calcular nueva Matriz de transformaciones
+//Obtener nueva normal
+//Calcular todo el ADS

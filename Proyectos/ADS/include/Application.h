@@ -19,6 +19,7 @@ typedef struct {
 	glm::vec4 ambient;
 	glm::vec4 diffuse;
 	glm::vec4 specular;
+	int shininess;
 }Material;
 
 class Application
@@ -34,10 +35,15 @@ private:
 	void setupProgram1();
 	void setupProgram2();
 	float time{ 0.0f };
+	Material material;
+	Light light;
+
 	glm::mat4 camera;
 	glm::mat4 projection;
 	glm::vec3 eye{0.0f, 0.0f, 2.0f};
 	glm::vec3 center{0.1f, 0.1f, 0.5f};
+
+
 
 public:
 	Application();
