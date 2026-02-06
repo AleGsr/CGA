@@ -7,7 +7,7 @@ out vec4 vertexColor;
 uniform float time;
 uniform mat4 cam;
 uniform mat4 projection;
-
+uniform mat4 object;
 
 
 struct Light 
@@ -31,7 +31,7 @@ uniform Light light;
 uniform Material material;
 uniform vec3 eye;
 
-
+vec3 Normal = vec3(0.0, 1.0, 0.0);
 
 
 
@@ -43,7 +43,7 @@ vec4 Ambient(struct Light l, struct Material m)
 vec4 Diffuse(struct Light l, struct Material m, vec3 Normal)
 {
 	vec4 resultMultDiffuse = light.diffuse * material.diffuse;
-	vec3 resultDot = dot(light.position, Normal);
+	float resultDot = dot(light.position, Normal);
 	return resultMultDiffuse * resultDot;
 }
 
@@ -51,32 +51,46 @@ vec4 Specular(struct Light l, struct Material m, vec3 eye, vec3 Normal)
 {
 	vec4 resultMultSpecular = -light.specular * material.specular;
 	vec3 refl = reflect(vec3(0.0,0.0,0.0), Normal);
-	vec3 resultDot = dot(eye, refl);
+	float resultDot = dot(eye, refl);
 	return resultMultSpecular * resultDot;
 }
 
-vec4 ADS()
+vec4 ADS(Light l, Material m, vec3 Normal, vec3 eye )
 {
 	return Ambient(l, m) + Diffuse(l, m, Normal) + Specular(l, m, eye, Normal);
 }
 
 
-vec3 Normal = vec3(0.0, 1.0, 0.0);
+
 out vec4 outColor;
+
+
 
 
 void main ()
 {  		
-	mat4 model = rotate(mat4(1.0), time, vec3(0.0, 1.0, 0.0));
-	vec4 worldPos = model * vPosition;
-	gl_Position = projection * camera * worldPos;
-	mat3 normalMat = transpose(inverse(mat3(camera * model)));
 
-	vec3 baseNormal = vec3(0.0,1.0,0.0);
-    vec3 N = normalize(normalMat * baseNormal);
+	mat4 accum = object; //Le defino la acumulacion de matrices a mi objeto
 
-	vec3 L = normalize(light.position - worldPos.xyz);
-    vec3 V = normalize(eye - worldPos.xyz);
+	vec4 Space = cam * accum * vPosition;
+
+
+	//transpuesta de la matriz
+	mat4 matForNormal = transpose(inverse(cam * accum));
+
+
+	//Normal del plano
+	vec3 newNormal = normalize((matForNormal * vec4(Normal, 0.0)).xyz);
+
+
+	vec3 SpaceLight = (cam * vec4(light.position, 1.0)).xyz; //La posicion de la luz en el espacio
+	vec3 DirectionLight = normalize(SpaceLight - Space.xyz); //La dirección de la luz
+	vec3 DirectionView = normalize(-Space.xyz); //Hacia donde va a pegar la luz
+
+	gl_Position = projection * Space; 
+
+	//ADS
+	outColor = ADS(light, material, newNormal, eye);
 
 
 

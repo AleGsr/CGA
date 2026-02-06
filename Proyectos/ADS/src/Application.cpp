@@ -98,8 +98,11 @@ void Application::setup()
 	ids["MaterialAmbient"] = glGetUniformLocation(ids["program2"], "material.ambient");
 	ids["MaterialDiffuse"] = glGetUniformLocation(ids["program2"], "material.diffuse");
 	ids["MaterialSpecular"] = glGetUniformLocation(ids["program2"], "material.specular");
+	ids["shininess"] = glGetUniformLocation(ids["program2"], "shininess");
+
 
 	ids["eye"] = glGetUniformLocation(ids["program2"], "eye");
+	ids["object"] = glGetUniformLocation(ids["program2"], "object");
 
 }
 
@@ -122,6 +125,7 @@ void Application::draw()
 
 
 	glUniform3fv(ids["eye"], 1, glm::value_ptr(eye));
+	glUniformMatrix4fv(ids["object"], 1, GL_FALSE, glm::value_ptr(object));
 	
 
 	//Valores del uniform
@@ -135,6 +139,7 @@ void Application::draw()
 	glUniform4fv(ids["MaterialAmbient"], 1, glm::value_ptr(material.ambient));
 	glUniform4fv(ids["MaterialDiffuse"], 1, glm::value_ptr(material.diffuse));
 	glUniform4fv(ids["MaterialSpecular"], 1, glm::value_ptr(material.specular));
+	glUniform1i(ids["Shininess"], material.shininess);
 
 
 

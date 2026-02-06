@@ -24,11 +24,11 @@ typedef struct {
 
 class Application
 {
-	
+
 private:
-	
+
 	std::map<std::string, GLuint> ids;
-	
+
 	Plane oPlane;
 
 	void setupGeometry();
@@ -40,10 +40,10 @@ private:
 
 	glm::mat4 camera;
 	glm::mat4 projection;
-	glm::vec3 eye{0.0f, 0.0f, 2.0f};
-	glm::vec3 center{0.1f, 0.1f, 0.5f};
+	glm::vec3 eye{ 0.0f, 0.0f, 2.0f };
+	glm::vec3 center{ 0.1f, 0.1f, 0.5f };
 
-
+	glm::mat4 object{ 1.0f };
 
 public:
 	Application();
