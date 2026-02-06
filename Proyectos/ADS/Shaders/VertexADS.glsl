@@ -6,6 +6,8 @@ layout (location = 1) in vec4 vColor;
 out vec4 vertexColor;
 uniform float time;
 uniform mat4 cam;
+uniform mat4 projection;
+
 
 
 struct Light 
@@ -14,18 +16,24 @@ struct Light
 	vec4 ambient;
 	vec4 diffuse;
 	vec4 specular;
-}
+};
 
 struct Material
 {
 	vec4 ambient;
 	vec4 diffuse;
 	vec4 specular;
-}
+	float shininess;
+};
+
 
 uniform Light light;
 uniform Material material;
 uniform vec3 eye;
+
+
+
+
 
 vec4 Ambient(struct Light l, struct Material m)
 {
@@ -59,10 +67,24 @@ out vec4 outColor;
 
 void main ()
 {  		
+	mat4 model = rotate(mat4(1.0), time, vec3(0.0, 1.0, 0.0));
+	vec4 worldPos = model * vPosition;
+	gl_Position = projection * camera * worldPos;
+	mat3 normalMat = transpose(inverse(mat3(camera * model)));
+
+	vec3 baseNormal = vec3(0.0,1.0,0.0);
+    vec3 N = normalize(normalMat * baseNormal);
+
+	vec3 L = normalize(light.position - worldPos.xyz);
+    vec3 V = normalize(eye - worldPos.xyz);
+
+
+
+
 	//Operaciones de transformaciones
-	outColor = ADS();
-	vec4 newPosition = vPosition;
+	//outColor = ADS();
+	//vec4 newPosition = vPosition;
 	//Aplicar al vertice las transformaciones
 	//Primero new pos con todas las transformaciones = myPosition, después calculo de ADS
-	gl_Position = newPosition;  //equivale a hacer return gl_Position	
+	//gl_Position = newPosition;  //equivale a hacer return gl_Position	
 }

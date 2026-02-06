@@ -76,6 +76,17 @@ void Application::setup()
 	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
 
 
+	light.position = glm::vec3(0.0f, 3.0f, 3.0f);
+	light.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	light.diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	light.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	material.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	material.diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	material.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.shininess = 32;
+
+
 	//Ids
 	 //Light
 	ids["LightPosition"] = glGetUniformLocation(ids["program2"], "light.position");
@@ -87,6 +98,8 @@ void Application::setup()
 	ids["MaterialAmbient"] = glGetUniformLocation(ids["program2"], "material.ambient");
 	ids["MaterialDiffuse"] = glGetUniformLocation(ids["program2"], "material.diffuse");
 	ids["MaterialSpecular"] = glGetUniformLocation(ids["program2"], "material.specular");
+
+	ids["eye"] = glGetUniformLocation(ids["program2"], "eye");
 
 }
 
@@ -108,7 +121,7 @@ void Application::draw()
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
 
 
-
+	glUniform3fv(ids["eye"], 1, glm::value_ptr(eye));
 	
 
 	//Valores del uniform
@@ -123,7 +136,8 @@ void Application::draw()
 	glUniform4fv(ids["MaterialDiffuse"], 1, glm::value_ptr(material.diffuse));
 	glUniform4fv(ids["MaterialSpecular"], 1, glm::value_ptr(material.specular));
 
-	
+
+
 	//Seleccionar la geometria (el triangulo)
 	//glBindVertexArray(ids["triangle"]);
 	glBindVertexArray(oPlane.vao);
