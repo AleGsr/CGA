@@ -8,8 +8,6 @@ uniform float time;
 uniform mat4 cam;
 
 
-float 
-
 void main ()
 {  		
 	vertexColor = vColor;

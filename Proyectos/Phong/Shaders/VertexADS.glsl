@@ -7,7 +7,7 @@ out vec4 vertexColor;
 uniform float time;
 uniform mat4 cam;
 uniform mat4 projection;
-uniform mat4 model;
+uniform mat4 object;
 
 
 struct Light 
@@ -27,8 +27,8 @@ struct Material
 };
 
 
-uniform struct Light light;
-uniform struct Material material;
+uniform Light light;
+uniform Material material;
 uniform vec3 eye;
 
 vec3 Normal = vec3(0.0, 1.0, 0.0);
@@ -62,19 +62,22 @@ vec4 ADS(Light l, Material m, vec3 Normal, vec3 eye )
 
 
 
+out vec4 outColor;
+
 
 
 
 void main ()
 {  		
-	//gl_Position = projection * cam * model * vPosition;
+	gl_Position = projection * cam * object * vPosition;
+	mat4 accum = object; //Le defino la acumulacion de matrices a mi objeto
 
-	vec4 WorldSpace = cam * model * vPosition;
+	vec4 Space = cam * accum * vPosition;
 
-
+	//gl_Position = projection * Space;
 
 	//transpuesta de la matriz
-	mat4 matForNormal = transpose(inverse(cam * model));
+	mat4 matForNormal = transpose(inverse(cam * accum));
 
 
 	//Normal del plano
@@ -82,19 +85,20 @@ void main ()
 
 
 	vec3 SpaceLight = (cam * vec4(light.position, 1.0)).xyz; //La posicion de la luz en el espacio
-	vec3 DirectionLight = normalize(SpaceLight - WorldSpace.xyz); //La dirección de la luz
-	vec3 DirectionView = normalize(-WorldSpace.xyz); //Hacia donde va a pegar la luz
+	vec3 DirectionLight = normalize(SpaceLight - Space.xyz); //La dirección de la luz
+	vec3 DirectionView = normalize(-Space.xyz); //Hacia donde va a pegar la luz
 
 
 	//ADS
-	//outColor = ADS(light, material, newNormal, eye);
-	vertexColor = vec4(1.0,0.0,0.0,1.0);
+	outColor = ADS(light, material, newNormal, eye);
 
-	vec4 newPosition = vPosition;
-	newPosition.x = newPosition.x + cos(time);
-	gl_Position = newPosition; 
 
-	//gl_Position = projection * WorldSpace;
 
-	
+
+	//Operaciones de transformaciones
+	//outColor = ADS();
+	//vec4 newPosition = vPosition;
+	//Aplicar al vertice las transformaciones
+	//Primero new pos con todas las transformaciones = myPosition, después calculo de ADS
+	//gl_Position = newPosition;  
 }

@@ -13,7 +13,7 @@ Application::Application() : oPlane()
 
 void Application::setupGeometry()
 {
-	oPlane.createPlane(5);
+	oPlane.createPlane(100);
 
 	glGenVertexArrays(1, &oPlane.vao);
 	glBindVertexArray(oPlane.vao);
@@ -71,20 +71,20 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 void Application::setup()
 {
 	setupGeometry();
-	//setupProgram1();
+	setupProgram1();
 	setupProgram2();
-	projection = glm::perspective(glm::radians(45.0f), 1024.0f / 768.0f, 0.1f, 100.0f);
+	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
 
 
-	light.position = glm::vec3(1.0f, 0.5f, 0.0f);
+	light.position = glm::vec3(0.0f, 3.0f, 3.0f);
 	light.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-	light.diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	light.diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
 	light.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	material.ambient = glm::vec4(0.2f, 0.01f, 0.01f, 1.0f);
-	material.diffuse = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+	material.ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	material.diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
 	material.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	material.shininess = 16;
+	material.shininess = 32;
 
 
 	//Ids
@@ -102,16 +102,15 @@ void Application::setup()
 
 
 	ids["eye"] = glGetUniformLocation(ids["program2"], "eye");
-	ids["model"] = glGetUniformLocation(ids["program2"], "model");
+	ids["object"] = glGetUniformLocation(ids["program2"], "object");
 
 }
 
 void Application::update()
 {
 	time += 0.1f;
-	eye = glm::vec3( 0.0f, 2.0f * cos(time), 2.0f);
+	eye = glm::vec3( 0.0f, 3.0f, 3.0f);
 	camera = glm::lookAt(eye, center, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::mat4(1.0);
 }
 
 void Application::draw()
@@ -126,7 +125,7 @@ void Application::draw()
 
 
 	glUniform3fv(ids["eye"], 1, glm::value_ptr(eye));
-	glUniformMatrix4fv(ids["model"], 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(ids["object"], 1, GL_FALSE, glm::value_ptr(object));
 	
 
 	//Valores del uniform
@@ -162,10 +161,3 @@ void Application::draw()
 //Calcular nueva Matriz de transformaciones
 //Obtener nueva normal
 //Calcular todo el ADS
-
-
-//Quitar transformaciones
-//asi como se recibe el vertice asi se emite gl_position
-//trans cam y proj
-//Sino checar si los ids están bien, en caso de si: en c++ checar valores que pudieran estar mal
-//Debugger de NVidia si recibe los valores esperados

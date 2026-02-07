@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7275b995-19a7-4263-9c84-f8ba2b1abe33}</ProjectGuid>
-    <RootNamespace>ADS</RootNamespace>
+    <ProjectGuid>{49956c98-0bab-453c-bd20-2b941f8146e5}</ProjectGuid>
+    <RootNamespace>Phong</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -109,7 +109,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>include;$(SolutionDir)../Libs/glad/include;$(SolutionDir)../Libs/glm;$(SolutionDir)../Libs/glfw/src/$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <PerUserRedirection>true</PerUserRedirection>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,11 +124,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>include;$(SolutionDir)../Libs/glad/include;$(SolutionDir)../Libs/glm;$(SolutionDir)../Libs/glfw/src/$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <PerUserRedirection>true</PerUserRedirection>
+      <AdditionalLibraryDirectories>include;$(SolutionDir)../Libs/glad/include;$(SolutionDir)../Libs/glm;$(SolutionDir)../Libs/glfw/src/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Plane.h" />
+    <ClInclude Include="include\ShaderFuncs.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libs\glad\src\glad.c" />
     <ClCompile Include="src\Application.cpp" />
@@ -138,15 +141,10 @@
     <ClCompile Include="src\ShaderFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Plane.h" />
-    <ClInclude Include="include\ShaderFuncs.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\FragmentCamera.glsl" />
     <None Include="Shaders\FragmentADS.glsl" />
-    <None Include="Shaders\VertexCamera.glsl" />
+    <None Include="Shaders\FragmentCamera.glsl" />
     <None Include="Shaders\VertexADS.glsl" />
+    <None Include="Shaders\VertexCamera.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
