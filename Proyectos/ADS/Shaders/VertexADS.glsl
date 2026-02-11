@@ -5,7 +5,7 @@ layout (location = 1) in vec4 vColor;
 
 out vec4 vertexColor;
 uniform float time;
-uniform mat4 cam;
+uniform mat4 camera;
 uniform mat4 projection;
 uniform mat4 model;
 
@@ -32,32 +32,42 @@ uniform struct Material material;
 uniform vec3 eye;
 
 vec3 Normal = vec3(0.0, 1.0, 0.0);
+vec3 norm = normalize( Normal );
+vec3 lightv = normalize (light.position - vPosition)
+vec3 viewv = normalize( vec3(0.,0.,0.) - vPosition );
+vec3 refl = reflect( vec3(0.,0.,0.) - lightv, norm );
 
-
-
-vec4 Ambient(struct Light l, struct Material m)
+vec4 Ambient(struct Light light, struct Material material)
 {
 	return light.ambient * material.ambient;
 }
 
-vec4 Diffuse(struct Light l, struct Material m, vec3 Normal)
+vec4 Diffuse(struct Light light, struct Material material, vec3 Normal)
 {
-	vec4 resultMultDiffuse = light.diffuse * material.diffuse;
-	float resultDot = dot(light.position, Normal);
-	return resultMultDiffuse * resultDot;
+	vec4 diffuse = max(0.0, dot(lightv,  norm)) * material.diffuse * light.diffuse;
+	return diffuse;
 }
 
-vec4 Specular(struct Light l, struct Material m, vec3 eye, vec3 Normal)
+vec4 Specular(struct Light light, struct Material material, vec3 eye, vec3 Normal)
 {
-	vec4 resultMultSpecular = -light.specular * material.specular;
-	vec3 refl = reflect(vec3(0.0,0.0,0.0), Normal);
-	float resultDot = dot(eye, refl);
-	return resultMultSpecular * resultDot;
+	vec3 specular = vec3( 0.0, 0.0, 0.0 );
+	if (dot(lightv,viewv) > 0.0)
+	{
+		specular = pow(max(0.0, dot(viewv, refl)),
+						material.shininess) * material.specular * 
+						light.specular;
+	}
+	return specular;
+	
+	//vec4 resultMultSpecular = -light.specular * material.specular;
+	//vec3 refl = reflect(-DirectionLight, Normal);
+	//float resultDot = pow(max(dot(DirectionView, refl), 0.0), material.shininess);
+	//return resultMultSpecular * resultDot;
 }
 
-vec4 ADS(Light l, Material m, vec3 Normal, vec3 eye )
+vec4 ADS(Light light, Material material, vec3 Normal, vec3 eye )
 {
-	return Ambient(l, m) + Diffuse(l, m, Normal) + Specular(l, m, eye, Normal);
+	return Ambient(light, material) + Diffuse(light, material, Normal) + Specular(light, material, eye, Normal);
 }
 
 
@@ -67,34 +77,32 @@ vec4 ADS(Light l, Material m, vec3 Normal, vec3 eye )
 
 void main ()
 {  		
-	//gl_Position = projection * cam * model * vPosition;
+	
 
-	vec4 WorldSpace = cam * model * vPosition;
+	vec4 WorldSpace = camera * model * vPosition;
 
 
 
 	//transpuesta de la matriz
-	mat4 matForNormal = transpose(inverse(cam * model));
+	mat4 matForNormal = transpose(inverse(camera * model));
 
 
 	//Normal del plano
 	vec3 newNormal = normalize((matForNormal * vec4(Normal, 0.0)).xyz);
 
 
-	vec3 SpaceLight = (cam * vec4(light.position, 1.0)).xyz; //La posicion de la luz en el espacio
+	vec3 SpaceLight = (camera * vec4(light.position, 1.0)).xyz; //La posicion de la luz en el espacio
 	vec3 DirectionLight = normalize(SpaceLight - WorldSpace.xyz); //La dirección de la luz
 	vec3 DirectionView = normalize(-WorldSpace.xyz); //Hacia donde va a pegar la luz
 
 
 	//ADS
-	//outColor = ADS(light, material, newNormal, eye);
-	vertexColor = vec4(1.0,0.0,0.0,1.0);
+	vertexColor = ADS(light, material, newNormal, eye);
 
-	vec4 newPosition = vPosition;
-	newPosition.x = newPosition.x + cos(time);
-	gl_Position = newPosition; 
 
 	//gl_Position = projection * WorldSpace;
-
+	gl_Position = projection * camera * model * vPosition;
+	vertexColor = vec4(1.0,0.0,0.0,1.0);
 	
 }
+

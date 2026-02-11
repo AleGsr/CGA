@@ -98,7 +98,7 @@ void Application::setup()
 	ids["MaterialAmbient"] = glGetUniformLocation(ids["program2"], "material.ambient");
 	ids["MaterialDiffuse"] = glGetUniformLocation(ids["program2"], "material.diffuse");
 	ids["MaterialSpecular"] = glGetUniformLocation(ids["program2"], "material.specular");
-	ids["shininess"] = glGetUniformLocation(ids["program2"], "shininess");
+	ids["shininess"] = glGetUniformLocation(ids["program2"], "material.shininess");
 
 
 	ids["eye"] = glGetUniformLocation(ids["program2"], "eye");
@@ -109,7 +109,7 @@ void Application::setup()
 void Application::update()
 {
 	time += 0.1f;
-	eye = glm::vec3( 0.0f, 2.0f * cos(time), 2.0f);
+	eye = glm::vec3(0.0f, 2.0f * cos(time), 2.0f);
 	camera = glm::lookAt(eye, center, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::mat4(1.0);
 }
@@ -120,14 +120,14 @@ void Application::draw()
 	glUseProgram(ids["program2"]);
 
 	//Pasar el resto de los parámetros para el programa
-	glUniform1i(ids["time2"], time);
-	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
+	glUniform1f(ids["time2"], time);
+	glUniformMatrix4fv(ids["camera"], 1, GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
 
 
 	glUniform3fv(ids["eye"], 1, glm::value_ptr(eye));
 	glUniformMatrix4fv(ids["model"], 1, GL_FALSE, glm::value_ptr(model));
-	
+
 
 	//Valores del uniform
 	//uniform, ids[nombre del ID]
@@ -169,3 +169,4 @@ void Application::draw()
 //trans cam y proj
 //Sino checar si los ids están bien, en caso de si: en c++ checar valores que pudieran estar mal
 //Debugger de NVidia si recibe los valores esperados
+
