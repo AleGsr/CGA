@@ -18,14 +18,17 @@ private:
 	Plane oPlane;
 
 	void setupGeometry();
-	void setupProgram1();
-	void setupProgram2();
+	void setupProgram();
 	GLuint setupTexture(const std::string& path);
 	float time{ 0.0f };
+	glm::vec3 eye{0.0f, 0.0f, 2.0f};
 	glm::mat4 camera;
 	glm::mat4 projection;
-	glm::vec3 eye{0.0f, 0.0f, 2.0f};
+	glm::mat4 model;
 	glm::vec3 center{0.1f, 0.1f, 0.5f};
+
+	void setTexture(GLuint texture);
+
 
 public:
 	Application();

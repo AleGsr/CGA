@@ -30,6 +30,12 @@
     <None Include="Shaders\VertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\FragmentTexture.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\VertexTexture.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">

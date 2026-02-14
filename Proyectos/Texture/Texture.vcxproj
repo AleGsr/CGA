@@ -131,8 +131,10 @@
   <ItemGroup>
     <None Include="Shaders\FragmentCamera.glsl" />
     <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Shaders\FragmentTexture.glsl" />
     <None Include="Shaders\VertexCamera.glsl" />
     <None Include="Shaders\VertexShader.glsl" />
+    <None Include="Shaders\VertexTexture.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libs\glad\src\glad.c" />

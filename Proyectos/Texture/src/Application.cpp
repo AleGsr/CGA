@@ -13,7 +13,7 @@ Application::Application() : oPlane()
 
 void Application::setupGeometry()
 {
-	oPlane.createPlane(2);
+	oPlane.createPlane(1);
 
 	glGenVertexArrays(1, &oPlane.vao);
 	glBindVertexArray(oPlane.vao);
@@ -42,22 +42,16 @@ void Application::setupGeometry()
 
 }
 
-void Application::setupProgram1()
+void Application::setupProgram()
 {
-	std::string vertexShader = loadTextFile("shaders/VertexShader.glsl");
-	std::string fragmentShader = loadTextFile("shaders/FragmentShader.glsl");
-	ids["program1"] = InitializeProgram(vertexShader, fragmentShader);
-	ids["time1"] = glGetUniformLocation(ids["program1"], "time");
-}
-
-void Application::setupProgram2()
-{
-	std::string vertexShader = loadTextFile("shaders/VertexCamera.glsl");
-	std::string fragmentShader = loadTextFile("shaders/FragmentCamera.glsl");
-	ids["program2"] = InitializeProgram(vertexShader, fragmentShader);
-	ids["time2"] = glGetUniformLocation(ids["program2"], "time");
-	ids["camera"] = glGetUniformLocation(ids["program2"], "camera");
-	ids["projection"] = glGetUniformLocation(ids["program2"], "projection");
+	std::string vertexShader = loadTextFile("shaders/VertexTexture.glsl");
+	std::string fragmentShader = loadTextFile("shaders/FragmentTexture.glsl");
+	ids["program"] = InitializeProgram(vertexShader, fragmentShader);
+	//ids["time2"] = glGetUniformLocation(ids["program"], "time");
+	ids["model"] = glGetUniformLocation(ids["program"], "model");
+	ids["camera"] = glGetUniformLocation(ids["program"], "camera");
+	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
+	ids["texture"] = glGetUniformLocation(ids["program"], "texture0");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -70,12 +64,25 @@ GLuint Application::setupTexture(const std::string& path)
 		return -1;
 
 
-	GLuint textID = -1; //Se inicializa
-	glGenTextures(1, &textID);
-	glBindTexture(GL_TEXTURE_2D, textID);
+	GLuint texID = -1; //Se inicializa
+	glGenTextures(1, &texID);
+	glBindTexture(GL_TEXTURE_2D, texID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
+
+	stbi_image_free(img);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return texID;
 	
-
-
 	//return GLuint();
 }
 
@@ -92,26 +99,31 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 void Application::setup()
 {
 	setupGeometry();
-	setupProgram1();
-	setupProgram2();
+	setupProgram();
 	ids["gato"] = setupTexture("Textures/Gato.png");
-	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
 }
 
 void Application::update()
 {
-	time += 0.1f;
-	eye = glm::vec3( 0.0f, 3.0f, 3.0f);
-	camera = glm::lookAt(eye, center, glm::vec3(0.0f, 1.0f, 0.0f));
+	time += 0.01f;
+
+	eye = glm::vec3( 0.0f, 2.0f + cos(time), 2.0f + cos(time));
+	center = glm::vec3(0.01f, 0.01f, 0.01f);
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	camera = glm::lookAt(eye, center, up);
+
+	model = glm::identity<glm::mat4>();
+	projection = glm::perspective(glm::radians(45.0f), (1024.0f / 768.0f), 0.1f, 200.0f);
 }
 
 void Application::draw()
 {
 	//Seleccionar programa (shaders)
-	glUseProgram(ids["program2"]);
+	glUseProgram(ids["program"]);
 
 	//Pasar el resto de los parámetros para el programa
-	glUniform1f(ids["time2"], time);
+	//glUniform1f(ids["time2"], time);
+	glUniformMatrix4fv(ids["model"], 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
 	
@@ -119,7 +131,15 @@ void Application::draw()
 	//glBindVertexArray(ids["triangle"]);
 	glBindVertexArray(oPlane.vao);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	//Seleccionar las texturas
+	//texture0
+	glBindTexture(GL_TEXTURE_2D, ids["gato"]);
+	glUniform1i(ids["texture"], 0);
+	glActiveTexture(GL_TEXTURE0);
+
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glPolygonMode(GL_BACK, GL_LINE);
 
 	//glDraw()
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
