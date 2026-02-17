@@ -96,6 +96,12 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	//teclas para mover	
 }
 
+void Application::ScrollCallback(double xoffset, double yoffset)
+{
+
+
+}
+
 void Application::setup()
 {
 	setupGeometry();
@@ -140,6 +146,14 @@ void Application::draw()
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glPolygonMode(GL_BACK, GL_LINE);
+
+
+	//texture1
+	glBindTexture(GL_TEXTURE_2D, ids["texture1"]);
+
+
+
+
 
 	//glDraw()
 	//glDrawArrays(GL_TRIANGLES, 0, 3);

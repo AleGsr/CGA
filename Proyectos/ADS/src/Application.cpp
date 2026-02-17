@@ -68,6 +68,8 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	//teclas para mover	
 }
 
+
+
 void Application::setup()
 {
 	setupGeometry();
@@ -158,15 +160,5 @@ void Application::draw()
 }
 
 
-//Operar el vertice
-//Calcular nueva Matriz de transformaciones
-//Obtener nueva normal
-//Calcular todo el ADS
 
-
-//Quitar transformaciones
-//asi como se recibe el vertice asi se emite gl_position
-//trans cam y proj
-//Sino checar si los ids están bien, en caso de si: en c++ checar valores que pudieran estar mal
-//Debugger de NVidia si recibe los valores esperados
 
