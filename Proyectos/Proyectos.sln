@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Phong", "Phong\Phong.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Texture", "Texture\Texture.vcxproj", "{2C5FAF9D-4B3B-4E7E-8590-509D30361C3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HeightMap", "HeightMap\HeightMap.vcxproj", "{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{2C5FAF9D-4B3B-4E7E-8590-509D30361C3E}.Release|x64.Build.0 = Release|x64
 		{2C5FAF9D-4B3B-4E7E-8590-509D30361C3E}.Release|x86.ActiveCfg = Release|Win32
 		{2C5FAF9D-4B3B-4E7E-8590-509D30361C3E}.Release|x86.Build.0 = Release|Win32
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Debug|x64.ActiveCfg = Debug|x64
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Debug|x64.Build.0 = Debug|x64
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Debug|x86.ActiveCfg = Debug|Win32
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Debug|x86.Build.0 = Debug|Win32
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Release|x64.ActiveCfg = Release|x64
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Release|x64.Build.0 = Release|x64
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Release|x86.ActiveCfg = Release|Win32
+		{8FB78A82-27E6-47CF-96B2-A8AE3D637C52}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

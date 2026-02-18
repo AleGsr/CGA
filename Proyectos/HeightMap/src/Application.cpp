@@ -53,7 +53,6 @@ void Application::setupProgram()
 	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
 	ids["texture0"] = glGetUniformLocation(ids["program"], "texture0");
 	ids["texture1"] = glGetUniformLocation(ids["program"], "texture1");
-	ids["mixerV"] = glGetUniformLocation(ids["program"], "mixerV");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -100,18 +99,16 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 
 void Application::ScrollCallback(double xoffset, double yoffset)
 {
-	if (yoffset > 0)
+	if (yoffset >= 1)
 	{
-		mixerV += 0.01f;
-		
+		mixerV = 0.0;
 	}
-	if (yoffset < 1)
+	if (yoffset <= -1)
 	{
-		mixerV -= 0.01f;
+		mixerV = 1.0f;
 	}
 
 	std::cout << "Scroll: " << yoffset << std::endl;
-	std::cout << "MixerValue: " << mixerV << std::endl;
 }
 
 void Application::setup()
@@ -150,8 +147,6 @@ void Application::draw()
 	//glBindVertexArray(ids["triangle"]);
 	glBindVertexArray(oPlane.vao);
 
-
-	glUniform1f(ids["mixerV"], mixerV);
 
 	//Seleccionar las texturas
 	//texture0
