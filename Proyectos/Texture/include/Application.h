@@ -21,7 +21,6 @@ private:
 	void setupGeometry();
 	void setupProgram();
 	GLuint setupTexture(const std::string& path);
-	float mixerV{0.0f};
 	float time{ 0.0f };
 	glm::vec3 eye{0.0f, 0.0f, 2.0f};
 	glm::mat4 camera;
@@ -38,5 +37,4 @@ public:
 	void update();
 	void draw();
 	void keyCallback(int key, int scancode, int action, int mods);
-	void ScrollCallback(double xoffset, double yoffset);
 };

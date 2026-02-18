@@ -52,8 +52,6 @@ void Application::setupProgram()
 	ids["camera"] = glGetUniformLocation(ids["program"], "camera");
 	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
 	ids["texture0"] = glGetUniformLocation(ids["program"], "texture0");
-	ids["texture1"] = glGetUniformLocation(ids["program"], "texture1");
-	ids["mixerV"] = glGetUniformLocation(ids["program"], "mixerV");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -98,36 +96,12 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	//teclas para mover	
 }
 
-void Application::ScrollCallback(double xoffset, double yoffset)
-{
-	if (yoffset > 0)
-	{
-		mixerV += 0.07f;
-		
-		if (mixerV >= 1)
-		{
-			mixerV = 1.0f;
-		}
-	}
-	if (yoffset < 1)
-	{
-		mixerV -= 0.07f;
-		if (mixerV <= 0)
-		{
-			mixerV = 0.0f;
-		}
-	}
-
-	//std::cout << "Scroll: " << yoffset << std::endl;
-	//std::cout << "MixerValue: " << mixerV << std::endl;
-}
 
 void Application::setup()
 {
 	setupGeometry();
 	setupProgram();
 	ids["gato"] = setupTexture("Textures/Gato.png");
-	ids["gato2"] = setupTexture("Textures/GatoChistoso.jpg");
 }
 
 void Application::update()
@@ -159,8 +133,6 @@ void Application::draw()
 	glBindVertexArray(oPlane.vao);
 
 
-	glUniform1f(ids["mixerV"], mixerV);
-
 	//Seleccionar las texturas
 	//texture0
 	glBindTexture(GL_TEXTURE_2D, ids["gato"]);
@@ -169,16 +141,6 @@ void Application::draw()
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glPolygonMode(GL_BACK, GL_LINE);
-
-
-	//texture1
-	glBindTexture(GL_TEXTURE_2D, ids["gato2"]);
-	glUniform1i(ids["texture1"], 1);
-	glActiveTexture(GL_TEXTURE1);
-
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glPolygonMode(GL_BACK, GL_LINE);
-
 
 
 
