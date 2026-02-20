@@ -13,7 +13,7 @@ Application::Application() : oPlane()
 
 void Application::setupGeometry()
 {
-	oPlane.createPlane(1);
+	oPlane.createPlane(100);
 
 	glGenVertexArrays(1, &oPlane.vao);
 	glBindVertexArray(oPlane.vao);
@@ -53,6 +53,7 @@ void Application::setupProgram()
 	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
 	ids["texture0"] = glGetUniformLocation(ids["program"], "texture0");
 	ids["texture1"] = glGetUniformLocation(ids["program"], "texture1");
+	ids["mixerV"] = glGetUniformLocation(ids["program"], "mixerV");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -99,24 +100,34 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 
 void Application::ScrollCallback(double xoffset, double yoffset)
 {
-	if (yoffset >= 1)
+	if (yoffset > 0)
 	{
-		mixerV = 0.0;
+		mixerV += 0.07f;
+		
+		if (mixerV >= 1)
+		{
+			mixerV = 1.0f;
+		}
 	}
-	if (yoffset <= -1)
+	if (yoffset < 1)
 	{
-		mixerV = 1.0f;
+		mixerV -= 0.07f;
+		if (mixerV <= 0)
+		{
+			mixerV = 0.0f;
+		}
 	}
 
-	std::cout << "Scroll: " << yoffset << std::endl;
+	//std::cout << "Scroll: " << yoffset << std::endl;
+	//std::cout << "MixerValue: " << mixerV << std::endl;
 }
 
 void Application::setup()
 {
 	setupGeometry();
 	setupProgram();
-	ids["gato"] = setupTexture("Textures/Gato.png");
-	ids["gato2"] = setupTexture("Textures/GatoChistoso.jpg");
+	ids["Diffuse"] = setupTexture("Textures/RuggedTerrainDiffuse.png");
+	ids["HeightMap"] = setupTexture("Textures/RuggedTerrainHeightMap.png");
 }
 
 void Application::update()
@@ -148,9 +159,11 @@ void Application::draw()
 	glBindVertexArray(oPlane.vao);
 
 
+	glUniform1f(ids["mixerV"], mixerV);
+
 	//Seleccionar las texturas
 	//texture0
-	glBindTexture(GL_TEXTURE_2D, ids["gato"]);
+	glBindTexture(GL_TEXTURE_2D, ids["Diffuse"]);
 	glUniform1i(ids["texture0"], 0);
 	glActiveTexture(GL_TEXTURE0);
 
@@ -159,7 +172,7 @@ void Application::draw()
 
 
 	//texture1
-	glBindTexture(GL_TEXTURE_2D, ids["gato2"]);
+	glBindTexture(GL_TEXTURE_2D, ids["HeightMap"]);
 	glUniform1i(ids["texture1"], 1);
 	glActiveTexture(GL_TEXTURE1);
 
