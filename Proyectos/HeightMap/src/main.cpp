@@ -9,6 +9,11 @@ void MiCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
     app.keyCallback(key, scancode, action, mods);
 }
 
+void MouseCallBack(GLFWwindow* window, double xpos, double ypos)
+{
+    app.mouseCallback(xpos, ypos);
+}
+
 void ScrollCallBack(GLFWwindow* window, double xoffset, double yoffset)
 {
     app.ScrollCallback(xoffset, yoffset);
@@ -44,6 +49,7 @@ int main(void)
 
     //seccion de asignacion de callbacks
     glfwSetKeyCallback(app.window, MiCallback);
+    glfwSetCursorPosCallback(app.window, MouseCallBack);
     glfwSetScrollCallback(app.window, ScrollCallBack);
 
 

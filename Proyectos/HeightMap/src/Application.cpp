@@ -98,6 +98,15 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	//teclas para mover	
 }
 
+void Application::mouseCallback(double xpos, double ypos)
+{
+	glfwGetCursorPos(window, &xpos, &ypos);
+
+	moveHorizontal = (xpos * 0.2);
+	moveVertical = (ypos * 0.2);
+
+}
+
 void Application::ScrollCallback(double xoffset, double yoffset)
 {
 	if (yoffset > 0)
