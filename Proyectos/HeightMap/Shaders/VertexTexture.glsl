@@ -8,18 +8,18 @@ uniform mat4 camera;
 uniform mat4 projection;
 
 uniform sampler2D texture1;
-
-//Combinando model y camera da el model view
+uniform float height;
 
 
 out vec2 texCoord;
 
 void main()
 {
-	vec4 heightColor = texture(texture1, vTexCoord);
-	float Luminosity = 	 0.299 *heightColor.r + 0.587 *heightColor.g + 0.114 * heightColor.b;
+	texCoord = vTexCoord;
+	vec4 heightColor = texture(texture1, texCoord);
+	float Luminosity = 	 0.2126 * heightColor.r + 0.7152 *heightColor.g + 0.0722 * heightColor.b;
 	vec4 newPosition = vPosition;
-	newPosition.y += Luminosity; 
+	newPosition.y += Luminosity * height; 
 	gl_Position = projection * camera * model * newPosition;
 
 }

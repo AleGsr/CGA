@@ -50,10 +50,11 @@ void Application::setupProgram()
 	//ids["time2"] = glGetUniformLocation(ids["program"], "time");
 	ids["model"] = glGetUniformLocation(ids["program"], "model");
 	ids["camera"] = glGetUniformLocation(ids["program"], "camera");
+	ids["height"] = glGetUniformLocation(ids["program"], "height"); 
 	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
 	ids["texture0"] = glGetUniformLocation(ids["program"], "texture0");
 	ids["texture1"] = glGetUniformLocation(ids["program"], "texture1");
-	ids["mixerV"] = glGetUniformLocation(ids["program"], "mixerV");
+	//ids["mixerV"] = glGetUniformLocation(ids["program"], "mixerV");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -63,7 +64,10 @@ GLuint Application::setupTexture(const std::string& path)
 		&width, &height, &channels, 4);
 
 	if (img == nullptr)
-		return -1;
+	{
+		std::cout << "No se pudo cargar textura: " << path << std::endl;
+		return 0;
+	}
 
 
 	GLuint texID = -1; //Se inicializa
@@ -74,7 +78,7 @@ GLuint Application::setupTexture(const std::string& path)
 	stbi_image_free(img);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -94,41 +98,34 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
-	//teclas para mover	
 }
 
 void Application::mouseCallback(double xpos, double ypos)
 {
 	glfwGetCursorPos(window, &xpos, &ypos);
 
-	moveHorizontal = (xpos * 0.2);
-	moveVertical = (ypos * 0.2);
+	//Calculo el centro de la ventana para el mouse
+	float centerMouseX = WINDOW_WIDTH / 2.0f;
+	float centerMouseY = WINDOW_HEIGHT / 2.0f;
+
+	moveHorizontal = (xpos - centerMouseX) * 0.15;
+	moveVertical = (ypos - centerMouseY) * 0.15;
 
 }
 
 void Application::ScrollCallback(double xoffset, double yoffset)
 {
-	if (yoffset > 0)
-	{
-		mixerV += 0.07f;
-		
-		if (mixerV >= 1)
-		{
-			mixerV = 1.0f;
-		}
-	}
-	if (yoffset < 1)
-	{
-		mixerV -= 0.07f;
-		if (mixerV <= 0)
-		{
-			mixerV = 0.0f;
-		}
-	}
+	const float sensibilidad = 0.30f;
+	zoom *= (1.0f + (float)yoffset * sensibilidad * 0.1f); //Se modifica la escala segun el scroll :)
 
-	//std::cout << "Scroll: " << yoffset << std::endl;
-	//std::cout << "MixerValue: " << mixerV << std::endl;
+	if (zoom < minScale)
+	{
+		zoom = minScale;
+	}
+	if (zoom > maxScale)
+	{
+		zoom = maxScale;
+	}
 }
 
 void Application::setup()
@@ -143,12 +140,18 @@ void Application::update()
 {
 	time += 0.01f;
 
-	eye = glm::vec3( 0.0f, 2.0f + cos(time), 2.0f + cos(time));
+	eye = glm::vec3( 0.0f, 3.0f , 5.0f);
 	center = glm::vec3(0.01f, 0.01f, 0.01f);
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	camera = glm::lookAt(eye, center, up);
 
-	model = glm::identity<glm::mat4>();
+	model = glm::mat4(1.0f);
+
+	model = glm::rotate(model, glm::radians(moveHorizontal), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(moveVertical), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(zoom, zoom, zoom));
+
+
 	projection = glm::perspective(glm::radians(45.0f), (1024.0f / 768.0f), 0.1f, 200.0f);
 }
 
@@ -162,6 +165,7 @@ void Application::draw()
 	glUniformMatrix4fv(ids["model"], 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
+	glUniform1f(ids["height"], 0.5f);
 	
 	//Seleccionar la geometria (el triangulo)
 	//glBindVertexArray(ids["triangle"]);
@@ -174,18 +178,18 @@ void Application::draw()
 
 
 	//texture0
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ids["Diffuse"]);
 	glUniform1i(ids["texture0"], 0);
-	glActiveTexture(GL_TEXTURE0);
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glPolygonMode(GL_BACK, GL_LINE);
 
 
 	//texture1
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, ids["HeightMap"]);
 	glUniform1i(ids["texture1"], 1);
-	glActiveTexture(GL_TEXTURE1);
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glPolygonMode(GL_BACK, GL_LINE);
@@ -197,4 +201,7 @@ void Application::draw()
 	//glDraw()
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawArrays(GL_TRIANGLES, 0, oPlane.getNumVertex());
+
+
+
 }
