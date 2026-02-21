@@ -9,7 +9,8 @@ uniform mat4 cam;
 
 
 void main ()
-{  		
+{  	
+
 	vertexColor = vColor;
 	vec4 newPosition = vPosition;
 	newPosition.x = newPosition.x + cos(time);

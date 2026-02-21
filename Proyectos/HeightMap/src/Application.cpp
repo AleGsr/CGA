@@ -171,6 +171,8 @@ void Application::draw()
 	glUniform1f(ids["mixerV"], mixerV);
 
 	//Seleccionar las texturas
+
+
 	//texture0
 	glBindTexture(GL_TEXTURE_2D, ids["Diffuse"]);
 	glUniform1i(ids["texture0"], 0);
