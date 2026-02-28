@@ -8,6 +8,22 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Plane.h"
 
+
+typedef struct {
+	glm::vec3 position;
+	glm::vec4 ambient;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+}Light;
+
+typedef struct {
+	glm::vec4 ambient;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+	int shininess;
+}Material;
+
+
 class Application
 {
 	
@@ -20,7 +36,12 @@ private:
 	void setupGeometry();
 	void setupProgram();
 
+	Material material;
+	Light light;
+
+
 	float time{ 0.0f };
+	glm::mat4 model;
 	glm::mat4 camera;
 	glm::mat4 projection;
 	glm::vec3 eye{0.0f, 0.0f, 2.0f};

@@ -19,22 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentCamera.glsl" />
-    <None Include="Shaders\FragmentADS.glsl" />
-    <None Include="Shaders\VertexCamera.glsl" />
-    <None Include="Shaders\VertexADS.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Plane.h" />
-    <ClInclude Include="include\ShaderFuncs.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\Libs\glad\src\glad.c" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Plane.cpp" />
     <ClCompile Include="src\ShaderFuncs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\FragmentADS.glsl" />
+    <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Shaders\VertexADS.glsl" />
+    <None Include="Shaders\VertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Plane.h" />
+    <ClInclude Include="include\ShaderFuncs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
