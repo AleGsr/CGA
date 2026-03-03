@@ -18,17 +18,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Application.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Plane.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ShaderFuncs.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="..\..\Libs\glad\src\glad.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -41,22 +33,24 @@
     <ClCompile Include="src\ShaderFuncs.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Libs\glad\src\glad.c">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentADS.glsl">
+    <None Include="Shaders\FragmentPhong.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\FragmentCamera.glsl">
+    <None Include="Shaders\VertexPhong.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\VertexADS.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\VertexCamera.glsl">
-      <Filter>Shaders</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plane.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShaderFuncs.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Plane.h"
 
+
 typedef struct {
 	glm::vec3 position;
 	glm::vec4 ambient;
@@ -22,28 +23,29 @@ typedef struct {
 	int shininess;
 }Material;
 
+
 class Application
 {
-
+	
 private:
-
+	
 	std::map<std::string, GLuint> ids;
-
+	
 	Plane oPlane;
 
 	void setupGeometry();
-	void setupProgram1();
-	void setupProgram2();
-	float time{ 0.0f };
+	void setupProgram();
+
 	Material material;
 	Light light;
 
+
+	float time{ 0.0f };
+	glm::mat4 model;
 	glm::mat4 camera;
 	glm::mat4 projection;
-	glm::vec3 eye{ 0.0f, 0.0f, 2.0f };
-	glm::vec3 center{ 0.1f, 0.1f, 0.5f };
-
-	glm::mat4 object{ 1.0f };
+	glm::vec3 eye{0.0f, 0.0f, 2.0f};
+	glm::vec3 center{0.1f, 0.1f, 0.5f};
 
 public:
 	Application();

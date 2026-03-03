@@ -129,11 +129,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Plane.h" />
-    <ClInclude Include="include\ShaderFuncs.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\Libs\glad\src\glad.c" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -141,10 +136,13 @@
     <ClCompile Include="src\ShaderFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentADS.glsl" />
-    <None Include="Shaders\FragmentCamera.glsl" />
-    <None Include="Shaders\VertexADS.glsl" />
-    <None Include="Shaders\VertexCamera.glsl" />
+    <None Include="Shaders\FragmentPhong.glsl" />
+    <None Include="Shaders\VertexPhong.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Plane.h" />
+    <ClInclude Include="include\ShaderFuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
