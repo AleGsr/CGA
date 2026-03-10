@@ -1,24 +1,35 @@
 #version 460 core
 
 layout (location = 0) in vec4 vPosition;
-layout (location = 1) in vec3 vNormal;
+layout (location = 1) in vec4 vNormal;
 
+out vec4 fragmentPosition;
+out vec4 normal;
+
+uniform float time;
 
 uniform mat4 camera;
 uniform mat4 projection;
 uniform mat4 model;
 
-out vec3 fragPos;
-out vec3 fragNormal;
-
 
 void main ()
 {  
-    vec4 worldPos = model * vPosition;
-    fragPos = worldPos.xyz;
-    mat3 normalMatrix = transpose(inverse(mat3(model)));
-    fragNormal = normalize(normalMatrix * vNormal);
 
-	gl_Position = projection * camera * worldPos;  //equivale a hacer return gl_Position	
+	//Posición del espacio al mundo
+	vec4 worldPosition = model * vPosition;
+	fragmentPosition = worldPosition;
+
+	//Transformamos la normal
+	mat4 matForNormal = transpose(inverse(camera * model));
+	normal = normalize(matForNormal * vNormal);
+
+	//Posicion final
+	vec4 newPosition = projection * camera * vec4(fragmentPosition, 1.0);
+	gl_Position = newPosition;
+
+
 }
+
+
 

@@ -77,3 +77,9 @@ void main ()
 	gl_Position = newPosition;  //equivale a hacer return gl_Position	
 }
 
+vec4 worldPos = model * vPosition;
+    fragPos = worldPos.xyz;
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    fragNormal = normalize(normalMatrix * vNormal);
+
+	gl_Position = projection * camera * worldPos;  
