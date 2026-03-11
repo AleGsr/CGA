@@ -37,8 +37,7 @@ vec4 Ambient(Light l, Material m)
 
 vec4 Diffuse(Light l, Material m, vec3 lightV, vec3 norm)
 {
-	float diffuse = max(dot(norm, lightV), 0.0)
-	return diffuse * m.diffuse * l.diffuse; 
+	return max(dot(norm, lightV), 0.0) * m.diffuse * l.diffuse; 
 }
 
 vec4 Specular(Light l, Material m, vec3 lightV, vec3 viewV, vec3 norm)
@@ -62,9 +61,9 @@ vec4 Specular(Light l, Material m, vec3 lightV, vec3 viewV, vec3 norm)
 void main()
 {
 	///vec3 Normal = vec3(0.0, 1.0, 0.0); //Ya no se ocupa
-	vec3 norm = normalize( normal );
-	vec3 lightV = normalize( light.position - fragmentPosition); 
-	vec3 viewV = normalize( eye - fragmentPosition ); 
+	vec4 norm = normalize( normal );
+	vec4 lightV = normalize( light.position - fragmentPosition); 
+	vec4 viewV = normalize( eye - fragmentPosition ); 
 	
 	//Calculamos ADS
 	vec4 ADS =  Ambient(light, material) +

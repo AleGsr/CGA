@@ -101,25 +101,25 @@ void Plane::createPlane(int side)
 	
 	////En 1x1 debe quedar asi
 	////Triangulo01
-	textureCoords[0] = 0.0f;
-	textureCoords[1] = 0.0f;
+	//textureCoords[0] = 0.0f;
+	//textureCoords[1] = 0.0f;
 
-	textureCoords[2] = 0.0f;
-	textureCoords[3] = 0.25f;
+	//textureCoords[2] = 0.0f;
+	//textureCoords[3] = 0.25f;
 
-	textureCoords[4] =0.25f;
-	textureCoords[5] = 0.0f;
+	//textureCoords[4] =0.25f;
+	//textureCoords[5] = 0.0f;
 
 
-	////Triangulo02
-	textureCoords[6] = 0.0f;
-	textureCoords[7] = 0.25f;
+	//////Triangulo02
+	//textureCoords[6] = 0.0f;
+	//textureCoords[7] = 0.25f;
 
-	textureCoords[8] = 0.25f;
-	textureCoords[9] = 0.25f;
+	//textureCoords[8] = 0.25f;
+	//textureCoords[9] = 0.25f;
 
-	textureCoords[10] = 0.25f;
-	textureCoords[11] = 0.0f;
+	//textureCoords[10] = 0.25f;
+	//textureCoords[11] = 0.0f;
 	
 	//Buscar en docs.gl los parametros que se pueden poner en el GL_NEAREST
 }

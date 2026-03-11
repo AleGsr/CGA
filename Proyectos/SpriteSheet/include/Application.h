@@ -23,11 +23,14 @@ private:
 	GLuint setupTexture(const std::string& path);
 	float time{ 0.0f };
 	glm::vec3 eye{0.0f, 0.0f, 2.0f};
+	glm::mat4 model;
 	glm::mat4 camera;
 	glm::mat4 projection;
-	glm::mat4 model;
 	glm::vec3 center{0.1f, 0.1f, 0.5f};
 
+	float indexX{ 0.0 };
+	float indexY{ 0.0 };
+	glm::vec2 tiles{ 4.0f, 6.0f };
 
 
 public:
@@ -37,4 +40,6 @@ public:
 	void update();
 	void draw();
 	void keyCallback(int key, int scancode, int action, int mods);
+
+	void MaquinaEstados();
 };

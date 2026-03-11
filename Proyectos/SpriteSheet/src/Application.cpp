@@ -3,6 +3,7 @@
 #include "ShaderFuncs.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "glm/gtc/type_ptr.hpp"
 
 
 Application::Application() : oPlane()
@@ -52,6 +53,9 @@ void Application::setupProgram()
 	ids["camera"] = glGetUniformLocation(ids["program"], "camera");
 	ids["projection"] = glGetUniformLocation(ids["program"], "projection");
 	ids["texture0"] = glGetUniformLocation(ids["program"], "texture0");
+	ids["indexX"] = glGetUniformLocation(ids["program"], "indexX");
+	ids["indexY"] = glGetUniformLocation(ids["program"], "indexY");
+	ids["tiles"] = glGetUniformLocation(ids["program"], "tiles");
 }
 
 GLuint Application::setupTexture(const std::string& path)
@@ -96,6 +100,12 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	//teclas para mover	
 }
 
+void Application::MaquinaEstados()
+{
+	
+
+}
+
 
 void Application::setup()
 {
@@ -107,6 +117,10 @@ void Application::setup()
 void Application::update()
 {
 	time += 0.01f;
+
+	indexX = 0.0f;
+	indexY = 0.0f;
+	tiles = glm::vec2(4.0f, 6.0f);
 
 	eye = glm::vec3( 0.0f, 2.0f, 2.0f);
 	center = glm::vec3(0.01f, 0.01f, 0.01f);
@@ -124,6 +138,10 @@ void Application::draw()
 
 	//Pasar el resto de los parámetros para el programa
 	//glUniform1f(ids["time2"], time);
+	glUniform1f(ids["indexX"], indexX);
+	glUniform1f(ids["indexY"], indexY);
+	glUniform2fv(ids["tiles"], 1, glm::value_ptr(tiles));
+
 	glUniformMatrix4fv(ids["model"], 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(ids["camera"],1 , GL_FALSE, &camera[0][0]);
 	glUniformMatrix4fv(ids["projection"], 1, GL_FALSE, &projection[0][0]);
