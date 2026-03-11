@@ -136,6 +136,7 @@
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\Plane.h" />
     <ClInclude Include="include\ShaderFuncs.h" />
+    <ClInclude Include="include\StateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libs\glad\src\glad.c" />
@@ -143,6 +144,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Plane.cpp" />
     <ClCompile Include="src\ShaderFuncs.cpp" />
+    <ClCompile Include="src\StateMachine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

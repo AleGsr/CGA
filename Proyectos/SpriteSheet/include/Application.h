@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Plane.h"
+#include "StateMachine.h"
 
 class Application
 {
@@ -17,6 +18,7 @@ private:
 	std::map<std::string, GLuint> ids;
 	
 	Plane oPlane;
+	StateMachine stMachine;
 
 	void setupGeometry();
 	void setupProgram();
@@ -40,6 +42,4 @@ public:
 	void update();
 	void draw();
 	void keyCallback(int key, int scancode, int action, int mods);
-
-	void MaquinaEstados();
 };

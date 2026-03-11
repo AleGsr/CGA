@@ -96,14 +96,6 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
-	//teclas para mover	
-}
-
-void Application::MaquinaEstados()
-{
-	
-
 }
 
 
@@ -118,9 +110,11 @@ void Application::update()
 {
 	time += 0.01f;
 
-	indexX = 0.0f;
+	/*indexX = 0.0f;
 	indexY = 0.0f;
-	tiles = glm::vec2(4.0f, 6.0f);
+	tiles = glm::vec2(4.0f, 6.0f);*/
+
+	stMachine.MoveAnimation(indexX, indexY);
 
 	eye = glm::vec3( 0.0f, 2.0f, 2.0f);
 	center = glm::vec3(0.01f, 0.01f, 0.01f);
@@ -167,3 +161,4 @@ void Application::draw()
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawArrays(GL_TRIANGLES, 0, oPlane.getNumVertex());
 }
+
