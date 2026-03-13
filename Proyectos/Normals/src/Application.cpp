@@ -40,22 +40,22 @@ void Application::setupGeometry()
 
 }
 
-void Application::setupProgram1()
+void Application::setupProgramGouraud()
 {
 	std::string vertexShader = loadTextFile("shaders/VertexShader.glsl");
 	std::string fragmentShader = loadTextFile("shaders/FragmentShader.glsl");
-	ids["program1"] = InitializeProgram(vertexShader, fragmentShader);
-	ids["time1"] = glGetUniformLocation(ids["program1"], "time");
+	ids["ProgramGouraud"] = InitializeProgram(vertexShader, fragmentShader);
+	ids["time1"] = glGetUniformLocation(ids["ProgramGouraud"], "time");
 }
 
-void Application::setupProgram2()
+void Application::setupProgramPhong()
 {
 	std::string vertexShader = loadTextFile("shaders/VertexCamera.glsl");
 	std::string fragmentShader = loadTextFile("shaders/FragmentCamera.glsl");
-	ids["program2"] = InitializeProgram(vertexShader, fragmentShader);
-	ids["time2"] = glGetUniformLocation(ids["program2"], "time");
-	ids["camera"] = glGetUniformLocation(ids["program2"], "camera");
-	ids["projection"] = glGetUniformLocation(ids["program2"], "projection");
+	ids["ProgramPhong"] = InitializeProgram(vertexShader, fragmentShader);
+	ids["time2"] = glGetUniformLocation(ids["ProgramPhong"], "time");
+	ids["camera"] = glGetUniformLocation(ids["ProgramPhong"], "camera");
+	ids["projection"] = glGetUniformLocation(ids["ProgramPhong"], "projection");
 }
 
 void Application::keyCallback(int key, int scancode, int action, int mods)
@@ -69,8 +69,8 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 void Application::setup()
 {
 	setupGeometry();
-	setupProgram1();
-	setupProgram2();
+	setupProgramGouraud();
+	setupProgramPhong();
 	projection = glm::perspective(45.0f, 1024.0f / 768.0f, 0.1f, 100.0f);
 }
 

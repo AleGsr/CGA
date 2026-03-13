@@ -77,7 +77,7 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 	//	//std::cout << "El personaje está en estado Idle." << std::endl;
 	//	break;
 	}
-
+	std::cout << "StateMachine" << std::endl;
 	//if (indexX > tile.x - 1.0) //Si el indexX o indexY se pasan de los límites, se regresa a 0 
 	//{
 	//	indexX = 0.0f;

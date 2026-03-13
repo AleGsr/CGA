@@ -46,16 +46,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\FragmentCamera.glsl">
+    <None Include="Shaders\FragmentADS.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\FragmentShader.glsl">
+    <None Include="Shaders\FragmentPhong.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\VertexCamera.glsl">
+    <None Include="Shaders\VertexADS.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\VertexShader.glsl">
+    <None Include="Shaders\VertexPhong.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

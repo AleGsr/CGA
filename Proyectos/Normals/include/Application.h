@@ -18,8 +18,8 @@ private:
 	Plane oPlane;
 
 	void setupGeometry();
-	void setupProgram1();
-	void setupProgram2();
+	void setupProgramGouraud();
+	void setupProgramPhong();
 	float time{ 0.0f };
 	glm::mat4 camera;
 	glm::mat4 projection;
