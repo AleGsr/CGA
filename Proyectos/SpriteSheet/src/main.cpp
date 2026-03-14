@@ -4,12 +4,11 @@
 #include "StateMachine.h"
 
 Application app;
-StateMachine stmch;
 
 void MiCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     app.keyCallback(key, scancode, action, mods);
-	stmch.keyCallback(key, scancode, action, mods);
+
 }
 
 

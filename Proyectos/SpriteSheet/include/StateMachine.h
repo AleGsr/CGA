@@ -7,13 +7,15 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+
 enum class Estados {
 	WalkUp,
 	WalkDown,
 	WalkRight,
 	WalkLeft,
 	Sit,
-	Idle
+	Idle,
+	Waiting
 };
 
 class StateMachine
@@ -28,9 +30,11 @@ private:
 public:
 	GLFWwindow* window;
 
+
 	//teclas
 	void keyCallback(int key, int scancode, int action, int mods);
 
 	//maquina de estados
-	void MoveAnimation(float indexX, float indexY);
+	void MoveAnimation(float& indexX, float& indexY, glm::vec2 tiles);
+	void CheckLastMovement();
 };

@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "glm/gtc/type_ptr.hpp"
+#include <chrono>
+std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
 
 Application::Application() : oPlane()
@@ -94,8 +96,14 @@ GLuint Application::setupTexture(const std::string& path)
 
 void Application::keyCallback(int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+
 		glfwSetWindowShouldClose(window, true);
+		return;
+	}
+
+	stMachine.keyCallback(key, scancode, action, mods);
+
 }
 
 
@@ -114,7 +122,7 @@ void Application::update()
 	indexY = 0.0f;
 	tiles = glm::vec2(4.0f, 6.0f);*/
 
-	stMachine.MoveAnimation(indexX, indexY);
+	stMachine.MoveAnimation(indexX, indexY, tiles);
 
 	eye = glm::vec3( 0.0f, 2.0f, 2.0f);
 	center = glm::vec3(0.01f, 0.01f, 0.01f);
