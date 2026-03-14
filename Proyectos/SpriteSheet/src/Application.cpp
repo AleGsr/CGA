@@ -4,8 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "glm/gtc/type_ptr.hpp"
-#include <chrono>
-std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+
 
 
 Application::Application() : oPlane()

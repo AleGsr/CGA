@@ -29,6 +29,7 @@ private:
 
 public:
 	GLFWwindow* window;
+	bool sitPlayed{ false };
 
 
 	//teclas

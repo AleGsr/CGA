@@ -45,7 +45,7 @@ int main(void)
 
 
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.98f, 0.85f, 0.9f, 1.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(app.window))
