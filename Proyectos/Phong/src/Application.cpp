@@ -138,8 +138,7 @@ void Application::draw()
 	glUniform4fv(ids["MaterialSpecular"], 1, glm::value_ptr(material.specular));
 	glUniform1i(ids["Shininess"], material.shininess);
 
-
-
+	
 	//Seleccionar la geometria (el triangulo)
 	//glBindVertexArray(ids["triangle"]);
 	glBindVertexArray(oPlane.vao);

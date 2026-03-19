@@ -11,7 +11,7 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 	if (action == GLFW_RELEASE) 
 	{
 		if (key == GLFW_KEY_W || key == GLFW_KEY_S ||
-			key == GLFW_KEY_D || key == GLFW_KEY_A || key == GLFW_KEY_C)
+			key == GLFW_KEY_D || key == GLFW_KEY_A)
 		{
 			currentState = Estados::Waiting;
 		}
@@ -35,9 +35,6 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_A:
 			currentState = Estados::WalkLeft;
-			break;
-		case GLFW_KEY_C:
-			currentState = Estados::Sit;
 			break;
 		}
 	}
@@ -75,7 +72,6 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 		break;
 	case Estados::Sit:
 		indexY = 4.0f;
-
 		if (indexX > tiles.x - 1.0f)
 		{
 			indexX = 0.0f;
@@ -87,7 +83,7 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 		indexY = 5.0f;
 		break;
 	case Estados::Waiting:
-		CheckLastMovement();
+		CheckLastMovement(indexX);
 		break;
 	}
 
@@ -102,7 +98,7 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 
 }
 
- void StateMachine::CheckLastMovement()
+ void StateMachine::CheckLastMovement(float& indexX)
  {
 	 auto now = std::chrono::steady_clock::now();
 	 auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyTime).count();
@@ -110,5 +106,6 @@ void StateMachine::keyCallback(int key, int scancode, int action, int mods)
 	 if (elapsed > 2000 && !sitPlayed)
 	 {
 		 currentState = Estados::Sit;
+		 indexX = 0.0f;
 	 }
  }

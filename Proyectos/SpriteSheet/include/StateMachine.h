@@ -37,5 +37,5 @@ public:
 
 	//maquina de estados
 	void MoveAnimation(float& indexX, float& indexY, glm::vec2 tiles);
-	void CheckLastMovement();
+	void CheckLastMovement(float& indexX);
 };

@@ -11,7 +11,7 @@ uniform vec3 eye;
 
 struct Light 
 {
-	vec4 position;
+	vec3 position;
 	vec4 ambient;
 	vec4 diffuse;
 	vec4 specular;
@@ -51,7 +51,6 @@ vec4 Specular(Light l, Material m, vec3 lightV, vec3 viewV, vec3 norm)
 		spec = specular * m.specular * l.specular;
 	}
 	return spec;
-	//return clamp(spec, 0.0,1.0);
 }
 
 
@@ -61,15 +60,13 @@ vec4 Specular(Light l, Material m, vec3 lightV, vec3 viewV, vec3 norm)
 void main()
 {
 	vec3 norm = normalize( normal );
-	vec3 lightV = normalize( vec3(light.position) - fragmentPosition); 
+	vec3 lightV = normalize(light.position - fragmentPosition); 
 	vec3 viewV = normalize( eye - fragmentPosition ); 
 	
-	//Calculamos ADS
-	vec4 ADS =  Ambient(light, material) +
-				Diffuse(light, material, lightV, norm) +
-				Specular(light, material, lightV, viewV, norm);
 
+	outColor = clamp(Ambient(light, material) + Diffuse(light, material, lightV, norm) + Specular(light, material, lightV, viewV, norm), 0.0, 1.0);
 
-	outColor = clamp(ADS, 0.0,1.0);
+	//Para que se vea mejor:
+	outColor = clamp(Ambient(light, material) + Diffuse(light, material, lightV, norm), 0.0, 1.0);
 
 }
